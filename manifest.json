@@ -1,0 +1,15 @@
+{
+  "name": "محاسبه قیمت طلا",
+  "short_name": "گلد",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#fbbf24"
+}
