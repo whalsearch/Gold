@@ -3,13 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>گلد | محاسبه طلا و حباب سکه</title>
+<title>محاسبه قیمت طلا</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%230f172a'/%3E%3Ctext x='50%25' y='53%25' dominant-baseline='middle' text-anchor='middle' font-size='300' font-family='Tahoma' font-weight='bold' fill='%23fbbf24'%3EG%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href='data:application/manifest+json,{"name":"محاسبه قیمت طلا","short_name":"گلد","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27512%27 height=%27512%27%3E%3Crect width=%27512%27 height=%27512%27 rx=%27100%27 fill=%27%230f172a%27/%3E%3Ctext x=%2750%25%27 y=%2753%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 font-size=%27300%27 font-family=%27Tahoma%27 font-weight=%27bold%27 fill=%27%23fbbf24%27%3EG%3C/text%3E%3C/svg%3E","sizes":"512x512","type":"image/svg+xml"}],"start_url":".","display":"standalone","background_color":"#0f172a","theme_color":"#fbbf24"}'>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Tahoma;background:#0f172a;color:#e2e8f0;padding:20px;min-height:100vh}
-.container{max-width:400px;margin:0 auto}
-h1{color:#fbbf24;text-align:center;margin-bottom:20px}
+.container{max-width:420px;margin:0 auto}
+h1{color:#fbbf24;text-align:center;margin-bottom:20px;font-size:1.5rem}
+.tabs{display:flex;gap:8px;margin-bottom:20px}
+.tab{flex:1;padding:12px;background:#1e293b;border:none;border-radius:10px;color:#94a3b8;font-size:.85rem;font-weight:bold;cursor:pointer;transition:.2s}
+.tab.active{background:#fbbf24;color:#111}
+.panel{display:none}
+.panel.active{display:block}
 .card{background:#1e293b;border-radius:15px;padding:20px;margin-bottom:15px}
 .card h2{font-size:1rem;color:#fbbf24;margin-bottom:15px}
 label{display:block;font-size:.8rem;color:#94a3b8;margin-bottom:5px}
@@ -22,50 +28,71 @@ button{width:100%;padding:12px;border:none;border-radius:10px;background:#fbbf24
 </head>
 <body>
 <div class="container">
-<h1>گلد 🥇</h1>
+<h1>محاسبه قیمت طلا 🥇</h1>
 
-<div class="card">
-<h2>محاسبه قیمت نهایی طلا</h2>
-<label>قیمت هر گرم طلا (تومان)</label>
-<input type="number" id="goldPrice" placeholder="مثلاً ۳۵۰۰۰۰۰">
-<label>اجرت (٪)</label>
-<input type="number" id="wagePercent" placeholder="مثلاً ۲۰">
-<label>مالیات (٪)</label>
-<input type="number" id="taxPercent" value="9">
-<button onclick="calcGold()">محاسبه</button>
-<div class="result" id="goldResult">—</div>
-<div class="formula">فرمول: قیمت نهایی = قیمت هر گرم + (قیمت × اجرت٪) + (قیمت × مالیات٪)</div>
+<div class="tabs">
+  <button class="tab active" onclick="showTab('gold')">قیمت طلا</button>
+  <button class="tab" onclick="showTab('coin')">حباب سکه</button>
 </div>
 
-<div class="card">
-<h2>محاسبه حباب سکه</h2>
-<label>قیمت هر گرم طلای ۱۸ عیار (تومان)</label>
-<input type="number" id="gram18" placeholder="مثلاً ۳۵۰۰۰۰۰">
-<label>قیمت سکه (تومان)</label>
-<input type="number" id="coinPrice" placeholder="مثلاً ۴۸۰۰۰۰۰۰">
-<button onclick="calcCoin()">محاسبه حباب</button>
-<div class="result" id="coinResult">—</div>
-<div class="formula">فرمول: قیمت طلای ۲۲ عیار = قیمت ۱۸ عیار × ۱.۲۲ | ارزش ذاتی = ۷.۳۲ × قیمت ۲۲ عیار + ۵۰,۰۰۰ | حباب = (قیمت سکه ÷ ارزش ذاتی - ۱) × ۱۰۰</div>
+<div class="panel active" id="goldPanel">
+  <div class="card">
+    <h2>محاسبه قیمت نهایی طلا</h2>
+    <label>وزن طلا (گرم)</label>
+    <input type="number" id="weight" placeholder="مثلاً 1.2" step="0.01">
+    <label>قیمت هر گرم طلا (تومان)</label>
+    <input type="number" id="goldPrice" placeholder="مثلاً 3500000">
+    <label>اجرت (٪)</label>
+    <input type="number" id="wagePercent" placeholder="مثلاً 20">
+    <label>مالیات (٪)</label>
+    <input type="number" id="taxPercent" value="9">
+    <button onclick="calcGold()">محاسبه</button>
+    <div class="result" id="goldResult">—</div>
+    <div class="formula">قیمت هر گرم نهایی = قیمت هر گرم + (قیمت × اجرت٪) + (قیمت × مالیات٪)<br>قیمت کل = وزن × قیمت هر گرم نهایی</div>
+  </div>
 </div>
 
-<div class="warning">
-⚠️ این ابزار صرفاً برای تخمین سریع است و مبنای معامله قرار نمی‌گیرد.
+<div class="panel" id="coinPanel">
+  <div class="card">
+    <h2>محاسبه حباب سکه</h2>
+    <label>قیمت هر گرم طلای ۱۸ عیار (تومان)</label>
+    <input type="number" id="gram18" placeholder="مثلاً 3500000">
+    <label>قیمت سکه (تومان)</label>
+    <input type="number" id="coinPrice" placeholder="مثلاً 48000000">
+    <button onclick="calcCoin()">محاسبه حباب</button>
+    <div class="result" id="coinResult">—</div>
+    <div class="formula">قیمت ۲۲ عیار = قیمت ۱۸ × ۱.۲۲ | ارزش ذاتی = ۷.۳۲ × قیمت ۲۲ + ۵۰,۰۰۰ | حباب = (قیمت سکه ÷ ارزش ذاتی - ۱) × ۱۰۰</div>
+  </div>
 </div>
+
+<div class="warning">⚠️ این ابزار صرفاً برای تخمین سریع است و مبنای معامله قرار نمی‌گیرد.</div>
 </div>
 
 <script>
+function showTab(tab){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  if(tab==='gold'){
+    document.querySelectorAll('.tab')[0].classList.add('active');
+    document.getElementById('goldPanel').classList.add('active');
+  } else {
+    document.querySelectorAll('.tab')[1].classList.add('active');
+    document.getElementById('coinPanel').classList.add('active');
+  }
+}
+
 function calcGold(){
+  let w=parseFloat(document.getElementById('weight').value);
   let p=parseFloat(document.getElementById('goldPrice').value);
-  let w=parseFloat(document.getElementById('wagePercent').value);
-  let t=parseFloat(document.getElementById('taxPercent').value);
-  if(!p||isNaN(w)||isNaN(t)){
+  let wage=parseFloat(document.getElementById('wagePercent').value);
+  let tax=parseFloat(document.getElementById('taxPercent').value);
+  if(!w||!p||isNaN(wage)||isNaN(tax)){
     document.getElementById('goldResult').innerText='لطفاً همه مقادیر را وارد کنید';
     return;
   }
-  let wage=(p*w)/100;
-  let tax=(p*t)/100;
-  let total=p+wage+tax;
-  document.getElementById('goldResult').innerHTML='قیمت نهایی هر گرم: <b>'+Math.round(total).toLocaleString('fa-IR')+'</b> تومان';
+  let perGram=p + (p*wage/100) + (p*tax/100);
+  let total=w*perGram;
+  document.getElementById('goldResult').innerHTML='قیمت هر گرم نهایی: <b>'+Math.round(perGram).toLocaleString('fa-IR')+'</b> تومان<br>قیمت کل <b>'+w+'</b> گرم: <b>'+Math.round(total).toLocaleString('fa-IR')+'</b> تومان';
 }
 
 function calcCoin(){
