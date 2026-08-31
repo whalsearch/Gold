@@ -16,6 +16,8 @@ label{display:block;font-size:.8rem;color:#94a3b8;margin-bottom:5px}
 input{width:100%;padding:10px;border:none;border-radius:8px;background:#0f172a;color:#fff;margin-bottom:10px;font-family:inherit}
 button{width:100%;padding:12px;border:none;border-radius:10px;background:#fbbf24;color:#111;font-weight:bold;cursor:pointer;margin-top:5px}
 .result{margin-top:15px;background:#0f172a;padding:15px;border-radius:10px;text-align:center;font-size:1.1rem;color:#34d399}
+.formula{margin-top:10px;font-size:.7rem;color:#94a3b8;text-align:center;line-height:1.8}
+.warning{margin-top:20px;font-size:.7rem;color:#f87171;text-align:center;line-height:1.6}
 </style>
 </head>
 <body>
@@ -32,6 +34,7 @@ button{width:100%;padding:12px;border:none;border-radius:10px;background:#fbbf24
 <input type="number" id="taxPercent" value="9">
 <button onclick="calcGold()">محاسبه</button>
 <div class="result" id="goldResult">—</div>
+<div class="formula">فرمول: قیمت نهایی = قیمت هر گرم + (قیمت × اجرت٪) + (قیمت × مالیات٪)</div>
 </div>
 
 <div class="card">
@@ -42,6 +45,11 @@ button{width:100%;padding:12px;border:none;border-radius:10px;background:#fbbf24
 <input type="number" id="coinPrice" placeholder="مثلاً ۴۸۰۰۰۰۰۰">
 <button onclick="calcCoin()">محاسبه حباب</button>
 <div class="result" id="coinResult">—</div>
+<div class="formula">فرمول: قیمت طلای ۲۲ عیار = قیمت ۱۸ عیار × ۱.۲۲ | ارزش ذاتی = ۷.۳۲ × قیمت ۲۲ عیار + ۵۰,۰۰۰ | حباب = (قیمت سکه ÷ ارزش ذاتی - ۱) × ۱۰۰</div>
+</div>
+
+<div class="warning">
+⚠️ این ابزار صرفاً برای تخمین سریع است و مبنای معامله قرار نمی‌گیرد.
 </div>
 </div>
 
