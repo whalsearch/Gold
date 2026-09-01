@@ -3,7 +3,12 @@
   "short_name": "گلد",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "letter_G_192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "letter_G_512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
